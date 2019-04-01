@@ -4,8 +4,8 @@
   "description": "A random number generator that uses four parameters for seed generation (a custom string, a random color, a random GW2 item name, a random GW2 mini name).",
   "main": "main.js",
   "scripts": {
-		"start": "electron .",
-		"dist": "electron-packager . gw2love-lottery --platform=win32 --arch=x64"
+    "start": "electron .",
+    "dist": "electron-packager . gw2love-lottery --platform=win32 --arch=x64"
   },
   "repository": {
     "type": "git",

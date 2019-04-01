@@ -77,69 +77,79 @@ $("#startbutton").click(async function(){
 		}
 	});
 
-
 	clearScreen();
 	
-	print("Total Players: "+players.length);
-	print("Today's magic word: "+seedString+"<hr>");
+	print("Players: "+players.length);
+	print(players.join(", "));
+	print("Magic word: "+seedString+"<hr>");
 	
 	await sleep(3000);
 	
-	print("Color of the day:");
-	print("<div id='color' style='background-color:"+seedColor+"'>"+seedColor+"</div><hr>");
+	//print("Color of the day:");
+	//print("<div id='color' style='background-color:"+seedColor+"'>"+seedColor+"</div><hr>");
 	
-	await sleep(3000);
-
-	$.get("https://api.guildwars2.com/v2/items",function(items){
-		todaysItemId=items[Math.floor(Math.random()*items.length)];
-
-		$.get("https://api.guildwars2.com/v2/items/"+todaysItemId+"?lang=en",async function(item){
-			seedItem = item;
-			print("Item of the day: ");
-			print("<img class='icon' id='item' src='"+seedItem.icon+"'>"+seedItem.name+"<hr>");
+	$.get("https://api.guildwars2.com/v2/colors",function(colors){
+		todaysColorId=colors[Math.floor(Math.random()*colors.length)];
+		$.get("https://api.guildwars2.com/v2/colors/"+todaysColorId+"?lang=en",async function(color){
+			let seedColorCode = "rgb("+color.cloth.rgb[0]+","+color.cloth.rgb[1]+","+color.cloth.rgb[2]+")";
+			seedColor = color.name;
+			print("Dye of the day:");
+			print("<div id='color' style='background-color:"+seedColorCode+"'>"+color.name+"</div><hr>");
+			
 			await sleep(3000);
 
-			$.get("https://api.guildwars2.com/v2/minis",function(minis){
-				todaysMiniId=minis[Math.floor(Math.random()*minis.length)];
-				$.get("https://api.guildwars2.com/v2/minis/"+todaysMiniId+"?lang=en",async function(mini){
-					seedMini = mini;
-					var miniName=seedMini.name;
-					if (/\(\(.*\)\)/.test(miniName) === true){
-						miniName = "An unknown Mini"
-					}
-					print("Mini of the day: ");
-					print("<img class='icon' id='mini' src='"+seedMini.icon+"'>"+miniName+"<hr>");
-				
+			$.get("https://api.guildwars2.com/v2/items",function(items){
+				todaysItemId=items[Math.floor(Math.random()*items.length)];
+
+				$.get("https://api.guildwars2.com/v2/items/"+todaysItemId+"?lang=en",async function(item){
+					seedItem = item;
+					print("Item of the day: ");
+					print("<img class='icon' id='item' src='"+seedItem.icon+"'>"+seedItem.name+"<hr>");
 					await sleep(3000);
 
-					seed = generateSeed(seedString,seedColor,seedItem.name,seedMini.name);
-					random = new Math.seedrandom(seed);
-					console.log("First random number: ",random());
-					print("Today's seed: ");
-					print(seed);
-					print("<hr>");
+					$.get("https://api.guildwars2.com/v2/minis",function(minis){
+						todaysMiniId=minis[Math.floor(Math.random()*minis.length)];
+						$.get("https://api.guildwars2.com/v2/minis/"+todaysMiniId+"?lang=en",async function(mini){
+							seedMini = mini.name.replace(/Mini /,'');
+							var miniName=seedMini;
+							if (/\(\(.*\)\)/.test(miniName) === true){
+								miniName = "An unknown Mini"
+							}
+							print("Mini of the day: ");
+							print("<img class='icon' id='mini' src='"+mini.icon+"'>"+miniName+"<hr>");
+						
+							await sleep(3000);
 
-					await sleep(3000);
+							seed = generateSeed(seedString,seedColor,seedItem.name,miniName);
+							random = new Math.seedrandom(seed);
+							console.log("First random number: ",random());
+							print("Today's seed: ");
+							print(seed);
+							print("<hr>");
 
-					print("Shuffling players...");
-					players = shuffle(players,random());
+							await sleep(3000);
 
-					await sleep(2000);
-					pray();
-					await sleep(2000);
+							print("Shuffling players...");
+							players = shuffle(players,random());
 
-					print("<hr><div class='winnertitle'>Winner:</div>",true);
-					await sleep(2000);
-					winner = players[Math.floor(random()*players.length)];
-					console.log(winner);
-					print("<div class='winnername'>"+winner+"</div>",true);
-					players = [];
-					$("#rerun").css("display","block");
-					
-					function pray(){
-						print("Praying to the RNG gods...");
-					}
+							await sleep(2000);
+							pray();
+							await sleep(2000);
 
+							print("<hr><div class='winnertitle'>Winner:</div>",true);
+							await sleep(2000);
+							winner = players[Math.floor(random()*players.length)];
+							console.log(winner);
+							print("<div class='winnername'>"+winner+"</div>",true);
+							players = [];
+							$("#rerun").css("display","block");
+							
+							function pray(){
+								print("Praying to the RNG gods...");
+							}
+
+						})
+					})
 				})
 			})
 		})

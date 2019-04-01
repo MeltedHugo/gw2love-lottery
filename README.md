@@ -3,7 +3,7 @@
 A random number generator that uses four parameters for seed generation (a custom string, a random color, a random GW2 item name, a random GW2 mini name).
 
 ## How to run:
-* Open https://hugobert.github.io/gw2love-lottery
+* Open https://hugobert.github.io/gw2love-lottery/
 * Enter all the participants
 * Enter a magic word
 * ...

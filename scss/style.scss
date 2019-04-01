@@ -1,0 +1,73 @@
+html, body{
+	max-width: 800px;
+	margin: 0;
+	padding: 0;
+	background-color: #404040;
+	font-family: Arial, Helvetica, sans-serif;
+	color: white;
+	#lottery {
+		#playerslist {
+			margin-left: 10px;
+			//width: 50%;
+			.btn {
+				color: white;
+			}
+			#seed-group {
+				input {
+					width: 100%;
+				}
+			}
+		}
+	}
+	#wrapper {
+		display: none;
+		border: solid white 1px;
+		padding: 5px;
+		margin: 10px;
+		.msg {
+			word-break: break-all;
+			&.center{
+				text-align: center;
+			}
+			#color {
+				text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+				padding-left: 10px;
+			}
+			.icon {
+				margin: 5px 10px;
+				width: 64px;
+				height: 64px;
+			}
+			hr {
+				border-color: #909090;
+			}
+			.winnername {
+				font-size: 30px;
+			}
+		}
+	}
+	#rerun {
+		display: none;
+		margin: 10px;
+	}
+
+	#validation {
+		margin: 10px;
+		#seed {
+			margin: 20px;
+			width: 80%;
+		}
+		.input-group {
+			width: 50%;
+			.btn {
+				color: white;
+			}
+		}
+		#output {
+			margin: 20px;
+			b {
+				font-size: 20px;
+			}
+		}
+	}
+}

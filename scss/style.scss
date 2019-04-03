@@ -6,11 +6,14 @@ html, body{
 	font-family: Arial, Helvetica, sans-serif;
 	color: white;
 	overflow-x: hidden;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100vw;
 	#lottery {
 		display: flex;
 		flex-direction: column;
-		justify-content: middle;
-		//width: 50%;
+		align-items: center;
 		max-width: 800px;
 		margin: 10px;
 		#title {
@@ -30,6 +33,7 @@ html, body{
 			align-self: center;
 		}
 		#form {
+			min-width: 90vw;
 			#playerslist {
 				//margin-left: 10px;
 				//width: 50%;
@@ -54,6 +58,8 @@ html, body{
 		border: solid white 1px;
 		padding: 5px;
 		margin: 10px;
+		width: calc(100% - 20px);
+		box-sizing: border-box;
 		.msg {
 			word-break: break-all;
 			&.center{
@@ -61,18 +67,44 @@ html, body{
 			}
 			#color {
 				text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-				padding-left: 10px;
+				padding: 32px 10px 32px 10px;
 			}
 			.icon {
 				margin: 5px 10px;
 				width: 64px;
 				height: 64px;
+				border: solid 1px grey;
+				&.Junk{
+					border-color: #859190;
+				}
+				&.Basic{
+					border-color: #58746d;
+				}
+				&.Fine{
+					border-color: #3091d1;
+				}
+				&.Masterwork{
+					border-color: #2cc559;
+				}
+				&.Rare{
+					border-color: #efb71c;
+				}
+				&.Exotic{
+					border-color: #dc6a21;
+				}
+				&.Ascended{
+					border-color: #e51554;
+				}
+				&.Legendary{
+					border-color: #925391;
+				}
 			}
 			hr {
 				border-color: #909090;
 			}
 			.winnername {
 				font-size: 30px;
+				color: #e51554;
 			}
 		}
 	}

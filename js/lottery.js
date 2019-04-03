@@ -104,7 +104,7 @@ $("#startbutton").click(async function(){
 				$.get("https://api.guildwars2.com/v2/items/"+todaysItemId+"?lang=en",async function(item){
 					seedItem = item;
 					print("Item of the day: ");
-					print("<img class='icon' id='item' src='"+seedItem.icon+"'>"+seedItem.name+"<hr>");
+					print("<img class='icon "+seedItem.rarity+"' src='"+seedItem.icon+"'>"+seedItem.name+"<hr>");
 					await sleep(3000);
 
 					$.get("https://api.guildwars2.com/v2/minis",function(minis){

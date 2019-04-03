@@ -159,7 +159,7 @@ $("#startbutton").click(async function(){
 $("#rerun").click(function(){
 	$("#wrapper").html("");
 	$("#wrapper").css("display","none");
-	$("#lottery").css("display","block");
+	$("#lottery").css("display","flex");
 	$("#rerun").css("display","none");
 })
 

@@ -12,20 +12,28 @@
 <body>
 
 	<div id="lottery">
-		<div class="form-group multiple-form-group" id="playerslist" data-max=1024>
-			<label>Participants:</label>
-	
-			<div class="form-group input-group">
-				<input type="text" name="multiple[]" class="form-control playername">
-					<span class="input-group-btn"><button type="button" class="btn btn-default btn-add">+
-					</button></span>
+		<div id="title">
+			<div id="guildtitle">Newbie Love</div>
+			<div id="lotterytitle">Lottery</div>
+		</div>
+		
+		<div id="logo"></div>
+		<div id="form">
+			<div class="form-group multiple-form-group" id="playerslist" data-max=1024>
+				<label>Participants:</label>
+		
+				<div class="form-group input-group">
+					<input type="text" name="multiple[]" class="form-control playername">
+						<span class="input-group-btn"><button type="button" class="btn btn-default btn-add">+
+						</button></span>
+				</div>
+		
+				<div class="form-group input-group" id="seed-group">
+					<label for="seed">Magic Word:</label>
+					<input type="text" name="seed" id="seed" class="form-control">
+				</div>
+				<button class="btn btn-success" id="startbutton">Start</button>
 			</div>
-	
-			<div class="form-group input-group" id="seed-group">
-				<label for="seed">Magic Word:</label>
-				<input type="text" name="seed" id="seed" class="form-control">
-			</div>
-			<button class="btn btn-success" id="startbutton">Start</button>
 		</div>
 	</div>
 	
@@ -58,5 +66,6 @@
 	<script src="js/seedrandom.min.js"></script>
 	<script src="js/seedrandom.min.js"></script>
 	<script src="js/lottery.js"></script>
+	
 </body>
 </html>

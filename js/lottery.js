@@ -154,6 +154,8 @@ $("#startbutton").click(async function(){
 							print("<hr>");
 
 							players = [];
+							playernames = [];
+							playerwords = [];
 							$("#rerun").css("display","block");
 							
 							function pray(){

@@ -46,13 +46,30 @@
 })(jQuery);
 
 var players = [];
-var seedString = "";
+var playernames = [];
+var playerwords = [];
+var seedString = ""; // Is an array: [playername,playerword]
 var seedColor = "";
 var seedItem = "";
 var seedMini = "";
 var seed = "";
 var winner = "";
 var random = "";
+var fullSeed = "";
+
+var root = null;
+var useHash = true; // Defaults to: false
+var hash = '#!'; // Defaults to: '#'
+var router = new Navigo(root, useHash, hash);
+
+router
+  .on({
+    '/:seed': function (params) {
+			console.log(params.seed);
+			validate(params.seed);
+    }
+  })
+  .resolve();
 
 
 //ideas for seed generation:
@@ -68,26 +85,24 @@ var random = "";
 const w = $("#wrapper");
 
 $("#startbutton").click(async function(){
-	seedString = $("#seed").val();
-	seedColor = generateColor();
 	
 	$(".playername").each(function(index){
 		if(this.value.length>0){
-			players.push(this.value);
+			let word = $(".playerword")[index].value;
+			if(word.length<=0){word=null;}
+			players.push([this.value,word]);
+			playernames.push(this.value);
+			if (word){playerwords.push(word)};
 		}
 	});
 
 	clearScreen();
 	
 	print("Players: "+players.length);
-	print(players.join(", "));
-	print("Magic word: "+seedString+"<hr>");
+	print(playernames.join(", "));
+	print("Magic words: "+playerwords.length+"<hr>");
 	
 	await sleep(3000);
-	
-	//print("Color of the day:");
-	//print("<div id='color' style='background-color:"+seedColor+"'>"+seedColor+"</div><hr>");
-	
 	$.get("https://api.guildwars2.com/v2/colors",function(colors){
 		todaysColorId=colors[Math.floor(Math.random()*colors.length)];
 		$.get("https://api.guildwars2.com/v2/colors/"+todaysColorId+"?lang=en",async function(color){
@@ -97,7 +112,6 @@ $("#startbutton").click(async function(){
 			print("<div id='color' style='background-color:"+seedColorCode+"'>"+color.name+"</div><hr>");
 			
 			await sleep(3000);
-
 			$.get("https://api.guildwars2.com/v2/items",function(items){
 				todaysItemId=items[Math.floor(Math.random()*items.length)];
 
@@ -119,16 +133,9 @@ $("#startbutton").click(async function(){
 							print("<img class='icon' id='mini' src='"+mini.icon+"'>"+miniName+"<hr>");
 						
 							await sleep(3000);
-
-							seed = generateSeed(seedString,seedColor,seedItem.name,miniName);
+							seed = generateSeed(players,todaysColorId,todaysItemId,todaysMiniId);
 							random = new Math.seedrandom(seed);
 							console.log("First random number: ",random());
-							print("Today's seed: ");
-							print(seed);
-							print("<hr>");
-
-							await sleep(3000);
-
 							print("Shuffling players...");
 							players = shuffle(players,random());
 
@@ -139,8 +146,13 @@ $("#startbutton").click(async function(){
 							print("<hr><div class='winnertitle'>Winner:</div>",true);
 							await sleep(2000);
 							winner = players[Math.floor(random()*players.length)];
-							console.log(winner);
-							print("<div class='winnername'>"+winner+"</div>",true);
+							console.log("Winner:",winner);
+							print("<div class='winnername'>"+winner[0]+"</div>",true);
+							print("<hr>")
+							print("Validation seed: ");
+							print("<a href='https://hugobert.github.io/gw2love-lottery/validate.html#!/"+seed+"'>"+seed+"</a>");
+							print("<hr>");
+
 							players = [];
 							$("#rerun").css("display","block");
 							
@@ -211,8 +223,9 @@ function generateColor(){
 
 function generateSeed(string,color,item,mini){
 	let seed = "";
-	seed = string+" "+color+" "+item+" "+mini;
+	seed = window.btoa(JSON.stringify([string,color,item,mini]));
 	console.log(seed);
+	//console.log(atob(seed));
 	return seed;
 }
 
@@ -220,7 +233,7 @@ function shuffle(oArray,rng) {
 	array = oArray.sort();
 	var currentIndex = array.length, temporaryValue, randomIndex;
 	while (0 !== currentIndex) {
-		randomIndex = Math.floor(random() * currentIndex);
+		randomIndex = Math.floor(rng * currentIndex);
 		//console.log(randomIndex);
 		currentIndex -= 1;
 		temporaryValue = array[currentIndex];
@@ -228,4 +241,58 @@ function shuffle(oArray,rng) {
 		array[randomIndex] = temporaryValue;
 	}
 	return array;
+}
+
+function validate(valSeed){
+	$("#output").html("");
+	function output(msg,cl){
+		if(cl){
+			$("#output").append("<div class='msg "+cl+"'>"+msg+"</div>");
+		} else {
+			$("#output").append("<div class='msg'>"+msg+"</div>");
+		}
+	}
+	output("Seed:<br><div class='seed'>"+valSeed+"</div>");
+
+	let data = JSON.parse(atob(valSeed));
+	let valPlayers = data[0];
+	let valColorId = data[1];
+	let valColorName = "";
+	let valItemId = data[2];
+	let valItemName = "";
+	let valMiniId = data[3];
+	let valMiniName = "";
+
+	$.get("https://api.guildwars2.com/v2/colors/"+valColorId+"?lang=en",function(color){
+		$.get("https://api.guildwars2.com/v2/items/"+valItemId+"?lang=en",function(item){
+			$.get("https://api.guildwars2.com/v2/minis/"+valMiniId+"?lang=en",function(mini){
+				valColorName = color.name;
+				valItemName = item.name;
+				valMiniName = mini.name;
+				if (/\(\(.*\)\)/.test(valMiniName) === true){
+					valMiniName = valMiniName+" (unknown)";
+				}
+
+				console.log(data);
+
+				valPlayers.forEach(function(p){
+					var pn = p[0];
+					var pw = p[1]||"";
+					output("<div class='name'>"+pn+"</div><div class='word'>"+pw+"</div>","player");
+				})
+
+				output("<br>");
+				output("Color: "+valColorName);
+				output("Item: "+valItemName);
+				output("Mini: "+valMiniName);
+
+				let valRandom = new Math.seedrandom(valSeed);
+				console.log("First random number: ",valRandom());
+				valPlayers = shuffle(valPlayers,valRandom());
+				let valWinner = valPlayers[Math.floor(valRandom()*valPlayers.length)][0];
+				//$("#output").html("");
+				output("<br>The winner was: <b>"+valWinner+"</b>");
+			})
+		})
+	})
 }

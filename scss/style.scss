@@ -37,6 +37,9 @@ html, body{
 			#playerslist {
 				//margin-left: 10px;
 				//width: 50%;
+				.playername {
+					margin-right: 5px;
+				}
 				.btn {
 					color: white;
 				}
@@ -114,21 +117,26 @@ html, body{
 	}
 
 	#validation {
-		margin: 10px;
-		#seed {
-			margin: 20px;
-			width: 80%;
-		}
-		.input-group {
-			width: 50%;
-			.btn {
-				color: white;
-			}
-		}
 		#output {
 			margin: 20px;
 			b {
 				font-size: 20px;
+			}
+			.msg {
+				margin: 5px 0;
+			}
+			.seed {
+				word-break: break-all;
+			}
+			.player {
+				display: flex;
+				flex-direction: row;
+				width: 100%;
+				border-bottom: solid 1px white;
+				.name {
+					margin-right: 5px;
+					min-width: 200px;
+				}
 			}
 		}
 	}

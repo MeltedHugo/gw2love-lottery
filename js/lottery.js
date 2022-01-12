@@ -150,7 +150,7 @@ $("#startbutton").click(async function(){
 							print("<div class='winnername'>"+winner[0]+"</div>",true);
 							print("<hr>")
 							print("Validation seed: ");
-							print("<a target='_blank' href='https://hugobert.github.io/gw2love-lottery/validate.html#!/"+seed+"'>"+seed+"</a>");
+							print("<a target='_blank' href='https://meltedhugo.github.io/gw2love-lottery/validate.html#!/"+seed+"'>"+seed+"</a>");
 							print("<hr>");
 
 							players = [];
